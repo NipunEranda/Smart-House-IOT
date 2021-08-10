@@ -1,9 +1,10 @@
 #MQTT Publish
 from random import randint
-
 import paho.mqtt.publish as publish
 
 host = "5.196.95.208"
+
+print("Server Started.")
 while True:
 	x = randint(0, 2000)
 	if(x > 0 and x < 500):
