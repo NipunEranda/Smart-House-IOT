@@ -4,6 +4,7 @@ import paho.mqtt.publish as publish
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 delayT = .1
 value = 0 #LDR Value
