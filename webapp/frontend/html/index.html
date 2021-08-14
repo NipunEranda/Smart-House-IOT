@@ -12,11 +12,27 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark d-flex justify-content-between">
-          <div class="p-2"><a class="navbar-brand" href="#">Easy Programming </a></div> 
-            <div class="p-2"><span id="subtitle">Controlling an LED with your Browser</span></div>
+          <div class="p-2"><a class="navbar-brand" href="#">Smart Home Controls </a></div> 
+            <div class="p-2"><span id="subtitle">Powered By SLIIT</span></div>
         </nav>
         <div class="container">
-            <div class="row">
+            <div class="row" id="readingsLDR" name="readingsLDR">
+                <div class="col" id="ldrValueDiv" name="ldrValueDiv">
+                    <center>
+                        <label>LDR Value</label><br/>
+                        <label id="ldrValue" name="ldrValue"></label>
+                    </center>
+                    <!--<button type="button" class="btn btn-block btn-info" id="turnOnBtn">Turn On</button>-->
+                </div>
+                <div class="col" id="ldrDecisionDiv" name="ldrDecisionDiv">
+                    <center>
+                        <label>Decision</label><br/>
+                        <label id="ldrDecision" name="ldrDecision"></label>
+                    </center>
+                    <!--<button type="button" class="btn btn-block btn-danger" id="turnOffBtn">Turn Off</button>-->
+                </div>
+            </div>
+            <div class="row" id="manualControls" name="manualControls">
                 <div class="col">
                     <button type="button" class="btn btn-block btn-info" id="turnOnBtn">Turn On</button>
                 </div>
@@ -26,7 +42,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button type="button" class="btn btn-block btn-dark" id="btnToggle">Turn On</button>
+                    <button type="button" class="btn btn-block btn-dark" id="btnToggle">Auto</button>
                 </div>
             </div>
         </div>
