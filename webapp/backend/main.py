@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Resource, Api
 from flask_cors import CORS, cross_origin
+from flask import request
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import RPi.GPIO as GPIO
@@ -10,34 +11,30 @@ import os
 import threading
 
 host = "5.196.95.208"
-automationStatus = False
+automationStatus = True
 value = ""
 output = ""
-LED_ON_LIST = []
-LED_OFF_LIST = []
 
 GPIO.setmode(GPIO.BOARD)
 delayT = .1
 value = 0  #LDR Value
 ldr = 7  # LDR pin number
-led1 = 11 # LED1 Pin number
-led2 = 13 #LED2 Pin number
-led3 = 15 #LED3 Pin number
-led4 = 12 #LED4 Pin number
-led5 = 16 #LED5 Pin number
-LED_LIST_ALL = [led1, led2, led3, led4,led5]
+led = {'led1': 11, 'led2': 13, 'led3': 15, 'led4': 12, 'led5': 16}
+LED_LIST_ALL = [led['led1'], led['led2'], led['led3'], led['led4'], led['led5']]
+LED_ON_LIST = []
+LED_OFF_LIST = []
 
 GPIO.setwarnings(False)
-GPIO.setup(led1, GPIO.OUT)
-GPIO.output(led1, False)
-GPIO.setup(led2, GPIO.OUT)
-GPIO.output(led2, False)
-GPIO.setup(led3, GPIO.OUT)
-GPIO.output(led3, False)
-GPIO.setup(led4, GPIO.OUT)
-GPIO.output(led4, False)
-GPIO.setup(led5, GPIO.OUT)
-GPIO.output(led5, False)
+GPIO.setup(led['led1'], GPIO.OUT)
+GPIO.output(led['led1'], False)
+GPIO.setup(led['led2'], GPIO.OUT)
+GPIO.output(led['led2'], False)
+GPIO.setup(led['led3'], GPIO.OUT)
+GPIO.output(led['led3'], False)
+GPIO.setup(led['led4'], GPIO.OUT)
+GPIO.output(led['led4'], False)
+GPIO.setup(led['led5'], GPIO.OUT)
+GPIO.output(led['led5'], False)
 
 def rc_time(ldr):
     count = 0
@@ -67,14 +64,14 @@ def automate():
                 publish.single("iotSmartHouse001/lightDecision",
                                str(value) + ",OFF",
                                hostname=host)
-                GPIO.output(led, False)
+                OFF_LED(LED_OFF_LIST)
                 output = str(value) + ",OFF"
             
             elif (int(value) > 100000):
                 publish.single("iotSmartHouse001/lightDecision",
                            str(value) + ",ON",
                            hostname=host)
-                GPIO.output(led, True)
+                ON_LED(LED_ON_LIST)
                 output = str(value) + ",ON"
         else:
             value = str(0)
@@ -113,16 +110,41 @@ api = Api(app)
 @app.route('/led/on', methods=['GET'], strict_slashes=False)
 @cross_origin()
 def on():
+    id = ''
     id = request.args.get('id')
-    ON_LED(LED_LIST_ALL)
-    return 'ALL LEDS ON'
+    if(id is None):
+    	ON_LED(LED_LIST_ALL)
+    	return 'ALL LEDS ON'
+    else:
+	ON_LED([led[id]])
+	return (str(id) + ' ON')
 
 @app.route('/led/off', methods=['GET'], strict_slashes=False)
 @cross_origin()
 def off():
+    id = ''
     id = request.args.get('id')
-    OFF_LED(LED_LIST_ALL)
-    return 'ALL LEDS OFF'
+    if(id is None):
+	OFF_LED(LED_LIST_ALL)
+	return 'ALL LEDS OFF'
+    else:
+        OFF_LED([led[id]])
+        return (str(id) + ' OFF')
+
+@app.route('/led/auto', methods=['GET'], strict_slashes=False)
+@cross_origin()
+def setLedAuto():
+    list = ''
+    global LED_ON_LIST
+    global LED_OFF_LIST
+    LED_ON_LIST = []
+    LED_OFF_LIST = []
+    list = request.args.get('list')
+    if(list is not None):
+    	for x in list.split(','):
+    	    LED_ON_LIST.append(led[x])
+    	    LED_OFF_LIST.append(led[x])
+    return ('list Count : ' + str(len(LED_ON_LIST)))
 
 @app.route('/mod/manual', methods=['GET'], strict_slashes=False)
 @cross_origin()
@@ -131,14 +153,12 @@ def manual():
     automationStatus = False
     return 'manual'
 
-
 @app.route('/mod/auto', methods=['GET'], strict_slashes=False)
 @cross_origin()
 def auto():
     global automationStatus
     automationStatus = True
     return 'auto'
-
 
 @app.route('/data/current', methods=['GET'], strict_slashes=False)
 @cross_origin()
@@ -148,10 +168,9 @@ def getData():
 
 if __name__ == '__main__':
     initialDirCreator()
-#    th1 = threading.Thread(target=automate)
-    #th2 = threading.Thread(target=appRun)
+    th1 = threading.Thread(target=automate)
 
-#    th1.start()
+    th1.start()
     app.run(debug=True, host='0.0.0.0')
 
-#    th1.join()
+    th1.join()

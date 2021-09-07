@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Smart Home Controls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:600|Teko:500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron:400,700" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark d-flex justify-content-between">
+        <div class="p-2"><a class="navbar-brand" href="#">Smart Home Controls </a></div>
+        <div class="p-2"><span id="subtitle">Powered By SLIIT</span></div>
+    </nav>
+    <div class="container">
+        <div class="row" id="readingsLDR" name="readingsLDR">
+            <div class="col" id="ldrValueDiv" name="ldrValueDiv">
+                <center>
+                    <label>LDR Value</label><br />
+                    <label id="ldrValue" name="ldrValue"></label>
+                </center>
+                <!--<button type="button" class="btn btn-block btn-info" id="turnOnBtn">Turn On</button>-->
+            </div>
+            <div class="col" id="ldrDecisionDiv" name="ldrDecisionDiv">
+                <center>
+                    <label>Decision</label><br />
+                    <label id="ldrDecision" name="ldrDecision"></label>
+                </center>
+                <!--<button type="button" class="btn btn-block btn-danger" id="turnOffBtn">Turn Off</button>-->
+            </div>
+        </div>
+        <div id="autoLightSet" name="autoLightSet">
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn1"
+                        style="padding: 0em 0em;">1</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn2"
+                        style="padding: 0em 0em;">2</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn3"
+                        style="padding: 0em 0em;">3</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn4"
+                        style="padding: 0em 0em;">4</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn5"
+                        style="padding: 0em 0em;">5</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn6"
+                        style="padding: 0em 0em;" disabled>6</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn7"
+                        style="padding: 0em 0em;" disabled>7</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="autoTurnOnBtn8"
+                        style="padding: 0em 0em;" disabled>8</button>
+                </div>
+            </div>
+        </div>
+        <div id="manualLightControl" name="manualLightControl">
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn1"
+                        style="padding: 0em 0em;">1</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn2"
+                        style="padding: 0em 0em;">2</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn3"
+                        style="padding: 0em 0em;">3</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn4"
+                        style="padding: 0em 0em;">4</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn5"
+                        style="padding: 0em 0em;">5</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn6"
+                        style="padding: 0em 0em;" disabled>6</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn7"
+                        style="padding: 0em 0em;" disabled>7</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-block btn-info" id="manualTurnOnBtn8"
+                        style="padding: 0em 0em;" disabled>8</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="manualControls" name="manualControls">
+            <div class="col">
+                <button type="button" class="btn btn-block btn-info" id="turnOnBtn">Turn On</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-block btn-danger" id="turnOffBtn">Turn Off</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-block btn-dark" id="btnToggle">Auto</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
