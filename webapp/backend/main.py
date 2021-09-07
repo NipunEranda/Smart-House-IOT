@@ -20,9 +20,9 @@ delayT = .1
 value = 0  #LDR Value
 ldr = 7  # LDR pin number
 led = {'led1': 11, 'led2': 13, 'led3': 15, 'led4': 12, 'led5': 16}
-LED_LIST_ALL = [led['led1'], led['led2'], led['led3'], led['led4'], led['led5']]
-LED_ON_LIST = []
-LED_OFF_LIST = []
+ledStatus = {'led1': 'off', 'led2': 'off', 'led3': 'off', 'led4': 'off', 'led5': 'off'}
+LED_LIST_ALL = ['led1', 'led2', 'led3', 'led4', 'led5']
+LED_AUTO_LIST = []
 
 GPIO.setwarnings(False)
 GPIO.setup(led['led1'], GPIO.OUT)
@@ -60,21 +60,22 @@ def automate():
 	global LED_OFF_LIST
         if (automationStatus == True):
             value = rc_time(ldr)
-            if (int(value) <= 100000):
+            if (int(value) <= 200000):
                 publish.single("iotSmartHouse001/lightDecision",
                                str(value) + ",OFF",
                                hostname=host)
-                OFF_LED(LED_OFF_LIST)
+                OFF_LED(LED_AUTO_LIST)
                 output = str(value) + ",OFF"
             
-            elif (int(value) > 100000):
+            elif (int(value) > 200000):
                 publish.single("iotSmartHouse001/lightDecision",
                            str(value) + ",ON",
                            hostname=host)
-                ON_LED(LED_ON_LIST)
+                ON_LED(LED_AUTO_LIST)
                 output = str(value) + ",ON"
         else:
             value = str(0)
+        time.sleep(1)
 
 
 def initialDirCreator():
@@ -96,16 +97,24 @@ def initialDirCreator():
 
 def ON_LED(list):
 	for x in list:
-		GPIO.output(x, True)
+		ledStatus.update({x: 'on'})
+		GPIO.output(led[x], True)
 
 def OFF_LED(list):
 	for x in list:
-		GPIO.output(x, False)
+		ledStatus.update({x: 'off'})
+		GPIO.output(led[x], False)
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 api = Api(app)
+
+@app.route('/led/status', methods=['GET'], strict_slashes=False)
+@cross_origin()
+def getStatus():
+    return ledStatus
+
 
 @app.route('/led/on', methods=['GET'], strict_slashes=False)
 @cross_origin()
@@ -116,7 +125,7 @@ def on():
     	ON_LED(LED_LIST_ALL)
     	return 'ALL LEDS ON'
     else:
-	ON_LED([led[id]])
+	ON_LED([id])
 	return (str(id) + ' ON')
 
 @app.route('/led/off', methods=['GET'], strict_slashes=False)
@@ -125,26 +134,37 @@ def off():
     id = ''
     id = request.args.get('id')
     if(id is None):
+	OFF_LED(LED_AUTO_LIST)
+	LED_AUTO_LIST = []
 	OFF_LED(LED_LIST_ALL)
 	return 'ALL LEDS OFF'
     else:
-        OFF_LED([led[id]])
+        OFF_LED([id])
         return (str(id) + ' OFF')
 
 @app.route('/led/auto', methods=['GET'], strict_slashes=False)
 @cross_origin()
 def setLedAuto():
-    list = ''
-    global LED_ON_LIST
-    global LED_OFF_LIST
-    LED_ON_LIST = []
-    LED_OFF_LIST = []
-    list = request.args.get('list')
-    if(list is not None):
-    	for x in list.split(','):
-    	    LED_ON_LIST.append(led[x])
-    	    LED_OFF_LIST.append(led[x])
-    return ('list Count : ' + str(len(LED_ON_LIST)))
+    global LED_AUTO_LIST
+    global LED_MANUAL_LIST
+    output = ''
+    id = request.args.get('id')
+    status = request.args.get('status')
+    if(id is None or status is None):
+	LED_AUTO_LIST = []
+	LED_MANUAL_LIST = []
+	output = 'list cleared'
+    else:
+	if(status == 'on'):
+	    if(led[id] not in LED_AUTO_LIST):
+		LED_AUTO_LIST.append(led[id])
+	    output = 'led included'
+	else:
+	    if(led[id] in LED_AUTO_LIST):
+		OFF_LED([id])
+		LED_AUTO_LIST.remove(led[id])
+	    output = 'led excluded'
+    return ('status : ' + output)
 
 @app.route('/mod/manual', methods=['GET'], strict_slashes=False)
 @cross_origin()
