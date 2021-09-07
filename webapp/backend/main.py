@@ -106,6 +106,12 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 api = Api(app)
 
+@app.route('/led/on', methods=['GET'], strict_slashes=False)
+@cross_origin()
+def on():
+    ON_LED([led1, led2, led3, led4])
+    return 'ALL LEDS ON'
+
 @app.route('/led/on/led1', methods=['GET'], strict_slashes=False)
 @cross_origin()
 def on1():
@@ -129,6 +135,12 @@ def on3():
 def on4():
     ON_LED([led4])
     return 'LED 4 ON'
+
+@app.route('/led/off', methods=['GET'], strict_slashes=False)
+@cross_origin()
+def off():
+    OFF_LED([led1, led2, led3, led4])
+    return 'ALL LEDS OFF'
 
 @app.route('/led/off/led1', methods=['GET'], strict_slashes=False)
 @cross_origin()
