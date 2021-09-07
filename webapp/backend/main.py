@@ -66,7 +66,6 @@ def automate():
                                hostname=host)
                 OFF_LED(LED_AUTO_LIST)
                 output = str(value) + ",OFF"
-            
             elif (int(value) > 200000):
                 publish.single("iotSmartHouse001/lightDecision",
                            str(value) + ",ON",
@@ -75,8 +74,6 @@ def automate():
                 output = str(value) + ",ON"
         else:
             value = str(0)
-        time.sleep(1)
-
 
 def initialDirCreator():
     homedir = os.environ['HOME']
@@ -115,6 +112,10 @@ api = Api(app)
 def getStatus():
     return ledStatus
 
+@app.route('/led/auto/list', methods=['GET'], strict_slashes=False)
+@cross_origin()
+def getAutoList():
+    return {'data': LED_AUTO_LIST}
 
 @app.route('/led/on', methods=['GET'], strict_slashes=False)
 @cross_origin()
@@ -156,13 +157,13 @@ def setLedAuto():
 	output = 'list cleared'
     else:
 	if(status == 'on'):
-	    if(led[id] not in LED_AUTO_LIST):
-		LED_AUTO_LIST.append(led[id])
+	    if(id not in LED_AUTO_LIST):
+		LED_AUTO_LIST.append(id)
 	    output = 'led included'
 	else:
-	    if(led[id] in LED_AUTO_LIST):
+	    if(id in LED_AUTO_LIST):
 		OFF_LED([id])
-		LED_AUTO_LIST.remove(led[id])
+		LED_AUTO_LIST.remove(id)
 	    output = 'led excluded'
     return ('status : ' + output)
 

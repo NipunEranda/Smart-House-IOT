@@ -1,10 +1,47 @@
 $(document).ready(function () {
-
     $('#btnToggle').text('Auto');
     $('#readingsLDR').show();
     $('#autoLightSet').show();
     $('#manualControls').hide();
     $('#manualLightControl').hide();
+
+    $( document ).ready(function() {
+    	$.ajax({
+            url: 'http://192.168.1.161:5000/led/status',
+            method: 'GET',
+            success: function (result) {
+                if(result != null){
+		    Object.keys(result).forEach(function(key){
+			if(result[key] == "on"){
+			    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).removeClass('btn-danger');
+                    	    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).addClass('btn-info');
+
+			}else{
+			    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).removeClass('btn-info');
+                    	    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).addClass('btn-danger');
+			}
+		    });
+		}
+            }
+        });
+
+	$.ajax({
+            url: 'http://192.168.1.161:5000/led/auto/list',
+            method: 'GET',
+            success: function (result) {
+                if(result != null){
+                    result.data.forEach(function (item, index) {
+                        if(item != null){
+                            $(('#autoTurnOnBtn' + item.charAt(item.length - 1))).removeClass('btn-info');
+                            $(('#autoTurnOnBtn' + item.charAt(item.length - 1))).addClass('btn-danger');
+
+                        }
+                    });
+                }
+            }
+        });
+
+    });
 
     setInterval(function () {
         if ($(btnToggle).text() == 'Auto') {
@@ -13,7 +50,7 @@ $(document).ready(function () {
         } else {
             $('#readingsLDR').hide();
         }
-    }, 500);
+    }, 100);
 
     function loadData() {
         $.ajax({
@@ -22,39 +59,27 @@ $(document).ready(function () {
             success: function (result) {
                 $('#ldrValue').text(result.split(",")[0]);
                 $('#ldrDecision').text(result.split(",")[1]);
-                console.log(result);
+		console.log(result.split(",")[0]);
             }
         });
     }
 
-    /*$('#turnOnBtn').on('click', function (e) {
-        $.ajax({
-            url: 'http://192.168.1.161:5000/led/on',
+    function loadBtnStatus(){
+	$.ajax({
+            url: 'http://192.168.1.161:5000/led/status',
             method: 'GET',
             success: function (result) {
-                console.log(result);
+                ledStatus = result;
             }
         });
-        e.preventDefault();
-    });
-
-    $('#turnOffBtn').on('click', function (e) {
-        $.ajax({
-            url: 'http://192.168.1.161:5000/led/off',
-            method: 'GET',
-            success: function (result) {
-                console.log(result);
-            }
-        });
-        e.preventDefault();
-    });*/
+    }
 
     //Manual LED activate Buttons
 
     $('#manualTurnOnBtn1').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn1').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led1',
+                url: 'http://192.168.1.161:5000/led/off?id=led1',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn1').removeClass('btn-info');
@@ -64,7 +89,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led1',
+                url: 'http://192.168.1.161:5000/led/on?id=led1',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn1').removeClass('btn-danger');
@@ -79,7 +104,7 @@ $(document).ready(function () {
     $('#manualTurnOnBtn2').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn2').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led2',
+                url: 'http://192.168.1.161:5000/led/off?id=led2',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn2').removeClass('btn-info');
@@ -89,7 +114,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led2',
+                url: 'http://192.168.1.161:5000/led/on?id=led2',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn2').removeClass('btn-danger');
@@ -104,7 +129,7 @@ $(document).ready(function () {
     $('#manualTurnOnBtn3').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn3').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led3',
+                url: 'http://192.168.1.161:5000/led/off?id=led3',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn3').removeClass('btn-info');
@@ -114,7 +139,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led3',
+                url: 'http://192.168.1.161:5000/led/on?id=led3',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn3').removeClass('btn-danger');
@@ -129,7 +154,7 @@ $(document).ready(function () {
     $('#manualTurnOnBtn4').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn4').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led4',
+                url: 'http://192.168.1.161:5000/led/off?id=led4',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn4').removeClass('btn-info');
@@ -139,7 +164,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led4',
+                url: 'http://192.168.1.161:5000/led/on?id=led4',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn4').removeClass('btn-danger');
@@ -154,7 +179,7 @@ $(document).ready(function () {
     $('#manualTurnOnBtn5').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn5').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led5',
+                url: 'http://192.168.1.161:5000/led/off?id=led5',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn5').removeClass('btn-info');
@@ -164,7 +189,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led5',
+                url: 'http://192.168.1.161:5000/led/on?id=led5',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn5').removeClass('btn-danger');
@@ -179,7 +204,7 @@ $(document).ready(function () {
     $('#manualTurnOnBtn6').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn6').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led6',
+                url: 'http://192.168.1.161:5000/led/off?id=led6',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn6').removeClass('btn-info');
@@ -189,7 +214,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led6',
+                url: 'http://192.168.1.161:5000/led/on?id=led6',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn6').removeClass('btn-danger');
@@ -204,7 +229,7 @@ $(document).ready(function () {
     $('#manualTurnOnBtn7').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn7').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led7',
+                url: 'http://192.168.1.161:5000/led/off?id=led7',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn7').removeClass('btn-info');
@@ -214,7 +239,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led7',
+                url: 'http://192.168.1.161:5000/led/on?id=led7',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn7').removeClass('btn-danger');
@@ -229,7 +254,7 @@ $(document).ready(function () {
     $('#manualTurnOnBtn8').on('click', function (e) {
         if (document.querySelector('#manualTurnOnBtn8').classList.contains('btn-info')) {
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/on?id=led8',
+                url: 'http://192.168.1.161:5000/led/off?id=led8',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn8').removeClass('btn-info');
@@ -239,7 +264,7 @@ $(document).ready(function () {
             });
         }else{
             $.ajax({
-                url: 'http://192.168.1.161:5000/led/off?id=led8',
+                url: 'http://192.168.1.161:5000/led/on?id=led8',
                 method: 'GET',
                 success: function (result) {
                     $('#manualTurnOnBtn8').removeClass('btn-danger');
