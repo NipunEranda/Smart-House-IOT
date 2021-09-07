@@ -20,10 +20,12 @@ GPIO.setmode(GPIO.BOARD)
 delayT = .1
 value = 0  #LDR Value
 ldr = 7  # LDR pin number
-led1 = 11  # LED1 Pin number
+led1 = 11 # LED1 Pin number
 led2 = 13 #LED2 Pin number
 led3 = 15 #LED3 Pin number
-led4 = 12  #LED4 Pin number
+led4 = 12 #LED4 Pin number
+led5 = 16 #LED5 Pin number
+LED_LIST_ALL = [led1, led2, led3, led4,led5]
 
 GPIO.setwarnings(False)
 GPIO.setup(led1, GPIO.OUT)
@@ -34,6 +36,8 @@ GPIO.setup(led3, GPIO.OUT)
 GPIO.output(led3, False)
 GPIO.setup(led4, GPIO.OUT)
 GPIO.output(led4, False)
+GPIO.setup(led5, GPIO.OUT)
+GPIO.output(led5, False)
 
 def rc_time(ldr):
     count = 0
@@ -109,62 +113,16 @@ api = Api(app)
 @app.route('/led/on', methods=['GET'], strict_slashes=False)
 @cross_origin()
 def on():
-    ON_LED([led1, led2, led3, led4])
+    id = request.args.get('id')
+    ON_LED(LED_LIST_ALL)
     return 'ALL LEDS ON'
-
-@app.route('/led/on/led1', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def on1():
-    ON_LED([led1])
-    return 'LED 1 ON'
-
-@app.route('/led/on/led2', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def on2():
-    ON_LED([led2])
-    return 'LED 2 ON'
-
-@app.route('/led/on/led3', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def on3():
-    ON_LED([led3])
-    return 'LED 3 ON'
-
-@app.route('/led/on/led4', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def on4():
-    ON_LED([led4])
-    return 'LED 4 ON'
 
 @app.route('/led/off', methods=['GET'], strict_slashes=False)
 @cross_origin()
 def off():
-    OFF_LED([led1, led2, led3, led4])
+    id = request.args.get('id')
+    OFF_LED(LED_LIST_ALL)
     return 'ALL LEDS OFF'
-
-@app.route('/led/off/led1', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def off1():
-    OFF_LED([led1])
-    return 'LED 1 OFF'
-
-@app.route('/led/off/led2', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def off2():
-    OFF_LED([led2])
-    return 'LED 2 OFF'
-
-@app.route('/led/off/led3', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def off3():
-    OFF_LED([led3])
-    return 'LED 3 OFF'
-
-@app.route('/led/off/led4', methods=['GET'], strict_slashes=False)
-@cross_origin()
-def off4():
-    OFF_LED([led4])
-    return 'LED 4 OFF'
 
 @app.route('/mod/manual', methods=['GET'], strict_slashes=False)
 @cross_origin()
