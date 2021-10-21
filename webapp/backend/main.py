@@ -188,10 +188,15 @@ def getData():
     return output
 
 if __name__ == '__main__':
-    initialDirCreator()
-    th1 = threading.Thread(target=automate)
+    try:
+        initialDirCreator()
+        th1 = threading.Thread(target=automate)
 
-    th1.start()
-    app.run(debug=True, host='0.0.0.0')
+        th1.start()
+        app.run(debug=True, host='0.0.0.0')
 
-    th1.join()
+        th1.join()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        GPIO.cleanup()
