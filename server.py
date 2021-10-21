@@ -34,6 +34,7 @@ try:
                 value = rc_time(ldr)
                 f = open("mod", "r")
                 mod = f.read()
+                f.close()
                 publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
                 if(int(value) <= 200000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
