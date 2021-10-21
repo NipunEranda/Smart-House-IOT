@@ -1,6 +1,7 @@
 #MQTT Client
 import paho.mqtt.client as mqtt
 import os
+import time
 
 host = "test.mosquitto.org"
 def on_connect(client, userdata, flags, rc):
@@ -12,6 +13,8 @@ def on_message(client, userdata, msg):
 	os.remove("mod")
 	f = open("mod", "w")
 	f.write(value)
+	f.close()
+	time.sleep(1000)
 	print(value)
 
 client = mqtt.Client()
