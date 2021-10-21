@@ -10,7 +10,6 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
 	value = str(msg.payload).replace("'", "").replace("b", "")
-	os.remove("mod")
 	f = open("mod", "w")
 	f.write(value)
 	f.close()
