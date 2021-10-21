@@ -60,7 +60,6 @@ def rc_time(ldr):
 
 def automate():
     while True:
-        time.sleep(1000)
         global automationStatus
         global value
         global output
