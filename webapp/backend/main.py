@@ -60,6 +60,7 @@ def rc_time(ldr):
 
 def automate():
     while True:
+        time.sleep(1000)
         global automationStatus
         global value
         global output
@@ -81,7 +82,6 @@ def automate():
                 output = str(value) + ",ON"
         else:
             value = str(0)
-        time.sleep(2000)
 
 
 def initialDirCreator():
