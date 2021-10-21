@@ -8,6 +8,7 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 delayT = .1
 value = 0 #LDR Value
+mod = 'auto'
 ldr = 7 # LDR pin number
 led = 11 # LED Pin number
 
@@ -35,6 +36,7 @@ print("Server Started.")
 try:
         while True:
                 value = rc_time(ldr)
+                publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
                 if(int(value) <= 100000):
 #                        print("Lights are OFF")
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)

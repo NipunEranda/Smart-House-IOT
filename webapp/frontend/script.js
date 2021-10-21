@@ -49,7 +49,7 @@ $(document).ready(function () {
         } else {
             $('#readingsLDR').hide();
         }
-    }, 2000);
+    }, 1000);
 
     function loadData() {
         $.ajax({
