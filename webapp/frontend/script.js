@@ -13,12 +13,11 @@ $(document).ready(function () {
                 if(result != null){
 		    Object.keys(result).forEach(function(key){
 			if(result[key] == "on"){
-			    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).removeClass('btn-danger');
-                    	    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).addClass('btn-info');
-
-			}else{
 			    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).removeClass('btn-info');
                     	    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).addClass('btn-danger');
+			}else{
+			    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).removeClass('btn-danger');
+                    	    $(('#manualTurnOnBtn' + key.charAt(key.length - 1))).addClass('btn-info');
 			}
 		    });
 		}
