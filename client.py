@@ -1,4 +1,5 @@
 #MQTT Client
+from time import sleep
 import paho.mqtt.client as mqtt
 import os
 
@@ -13,6 +14,7 @@ def on_message(client, userdata, msg):
 	f = open("mod", "w")
 	f.write(value)
 	f.close()
+	sleep(1000)
 	print(value)
 
 client = mqtt.Client()
