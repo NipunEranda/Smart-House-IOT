@@ -10,9 +10,13 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
 	value = str(msg.payload).replace("'", "").replace("b", "")
-	f = open("mod", "w")
-	f.write(value)
-	f.close()
+	while True:
+		f = open("mod", "w")
+		f.write(value)
+		f.close()
+		f = open("mod", "r")
+		if(f.read() == value):
+			break
 	print(value)
 
 client = mqtt.Client()
