@@ -35,9 +35,9 @@ try:
                 f = open("mod", "r")
                 mod = f.read()
                 publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
-                if(int(value) <= 300000):
+                if(int(value) <= 200000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
-                if(int(value) > 300000):
+                if(int(value) > 200000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
 
 except KeyboardInterrupt:
