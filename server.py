@@ -1,6 +1,7 @@
 #MQTT Publish
 from random import randint
 import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO
 import time
 
@@ -45,6 +46,22 @@ try:
 #                        print("Lights are ON")
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
                         GPIO.output(led, True)
+
+                host = "test.mosquitto.org"
+                def on_connect(client, userdata, flags, rc):
+                        print("Connected with result code " + str(rc))
+                        client.subscribe("iotSmartHouse001/ldr/mod")
+
+                def on_message(client, userdata, msg):
+                        value = str(msg.payload).replace("'", "").replace("b", "")
+                        print(value)
+
+                client = mqtt.Client()
+                client.on_connect = on_connect
+                client.on_message = on_message
+
+                client.connect(host, 1883, 60)
+                client.loop_forever()
 
 except KeyboardInterrupt:
         pass
