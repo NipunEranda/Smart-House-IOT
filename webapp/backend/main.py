@@ -81,7 +81,7 @@ def automate():
                 output = str(value) + ",ON"
         else:
             value = str(0)
-        time.sleep(5000)
+        time.sleep(2000)
 
 
 def initialDirCreator():
