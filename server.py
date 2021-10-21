@@ -35,7 +35,6 @@ try:
                 f = open("mod", "r")
                 mod = f.read()
                 f.close()
-                time.sleep(1000)
                 publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
                 if(int(value) <= 100000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
