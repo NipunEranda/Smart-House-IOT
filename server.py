@@ -10,10 +10,6 @@ delayT = .1
 value = 0 #LDR Value
 mod = 'auto'
 ldr = 7 # LDR pin number
-led = 11 # LED Pin number
-
-GPIO.setup(led, GPIO.OUT)
-GPIO.output(led, False)
 
 host = "5.196.95.208"
 
@@ -41,13 +37,9 @@ try:
                 f.close()
                 publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
                 if(int(value) <= 100000):
-#                        print("Lights are OFF")
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
-                        GPIO.output(led, False)
                 if(int(value) > 100000):
-#                        print("Lights are ON")
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
-                        GPIO.output(led, True)
 
 except KeyboardInterrupt:
         pass
