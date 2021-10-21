@@ -14,7 +14,6 @@ def on_message(client, userdata, msg):
 	f = open("mod", "w")
 	f.write(value)
 	f.close()
-	sleep(1000)
 	print(value)
 
 client = mqtt.Client()
