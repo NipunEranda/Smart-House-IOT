@@ -7,7 +7,6 @@ host = "test.mosquitto.org"
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code " + str(rc))
 	client.subscribe("iotSmartHouse001/ldr/mod")
-	sleep(1000)
 
 def on_message(client, userdata, msg):
 	value = str(msg.payload).replace("'", "").replace("b", "")
