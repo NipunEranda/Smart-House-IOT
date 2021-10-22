@@ -11,7 +11,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
 	value = str(msg.payload).replace("'", "").replace("b", "")
 	f = open("mod", "r")
-	if(not f.read() == "value"):
+	if(not f.read() == value):
 		f.close()
 		f = open("mod", "w")
 		f.write(value)
