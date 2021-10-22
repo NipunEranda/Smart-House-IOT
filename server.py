@@ -34,7 +34,6 @@ def rc_time(ldr):
         return count
 
 print("Server Started.")
-
 try:
         while True:
                 value = rc_time(ldr)
