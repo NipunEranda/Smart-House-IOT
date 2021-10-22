@@ -6,7 +6,7 @@ import time
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-delayT = 1000
+delayT = .1
 value = 0 #LDR Value
 mod = 'auto'
 ldr = 7 # LDR pin number
@@ -18,7 +18,6 @@ def publishMod():
         mod = f.read()
         f.close()
         publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
-        time.sleep(1000)
 
 def rc_time(ldr):
         count = 0
