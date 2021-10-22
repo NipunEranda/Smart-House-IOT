@@ -13,6 +13,13 @@ ldr = 7 # LDR pin number
 
 host = "5.196.95.208"
 
+def publishMod():
+        f = open("mod", "r")
+        mod = f.read()
+        f.close()
+        publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
+        time.sleep(1000)
+
 def rc_time(ldr):
         count = 0
 
@@ -32,10 +39,7 @@ print("Server Started.")
 try:
         while True:
                 value = rc_time(ldr)
-                f = open("mod", "r")
-                mod = f.read()
-                f.close()
-                publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
+                publishMod()
                 if(int(value) <= 200000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
                 if(int(value) > 200000):
