@@ -6,7 +6,7 @@ import time
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-delayT = .1
+delayT = 1000
 value = 0 #LDR Value
 mod = 'auto'
 ldr = 7 # LDR pin number
