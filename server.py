@@ -40,6 +40,7 @@ try:
                 value = rc_time(ldr)
                 #publishMod()
                 if(int(value) <= 200000):
+                        publishMod()
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
                 if(int(value) > 200000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
