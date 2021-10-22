@@ -17,7 +17,7 @@ def publishMod():
         f = open("mod", "r")
         mod = f.read()
         f.close()
-        publish.single("iotSmartHouse001/ldr/mod", str(mod), hostname=host)
+        publish.single("iotSmartHouse001/ldr/mod/current", str(mod), hostname=host)
 
 def rc_time(ldr):
         count = 0
@@ -38,9 +38,8 @@ print("Server Started.")
 try:
         while True:
                 value = rc_time(ldr)
-                #publishMod()
+                publishMod()
                 if(int(value) <= 200000):
-                        publishMod()
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
                 if(int(value) > 200000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
