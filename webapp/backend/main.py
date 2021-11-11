@@ -9,6 +9,7 @@ import time
 import csv
 import os
 import threading
+import sys
 
 host = "5.196.95.208"
 automationStatus = True
@@ -40,7 +41,7 @@ GPIO.output(led['led3'], False)
 GPIO.setup(led['led4'], GPIO.OUT)
 GPIO.output(led['led4'], False)
 GPIO.setup(led['led5'], GPIO.OUT)
-GPIO.output(led['led5'], False)
+GPIO.output(led['led5'], True)
 
 
 def rc_time(ldr):
@@ -60,27 +61,26 @@ def rc_time(ldr):
 
 def automate():
     while True:
-        global automationStatus
-        global value
-        global output
-        global LED_ON_LIST
-        global LED_OFF_LIST
-        if (automationStatus == True):
-            value = rc_time(ldr)
-            if (int(value) <= 200000):
-                publish.single("iotSmartHouse001/lightDecision",
-                               str(value) + ",OFF",
-                               hostname=host)
-                OFF_LED(LED_AUTO_LIST)
-                output = str(value) + ",OFF"
-            elif (int(value) > 200000):
-                publish.single("iotSmartHouse001/lightDecision",
-                               str(value) + ",ON",
-                               hostname=host)
-                ON_LED(LED_AUTO_LIST)
-                output = str(value) + ",ON"
-        else:
-            value = str(0)
+	try:
+        	global automationStatus
+        	global value
+        	global output
+        	global LED_ON_LIST
+        	global LED_OFF_LIST
+        	if (automationStatus == True):
+            		value = rc_time(ldr)
+            	if (int(value) <= 250000):
+                	publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
+                	OFF_LED(LED_AUTO_LIST)
+                	output = str(value) + ",OFF"
+            	elif (int(value) > 250000):
+                	publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
+                	ON_LED(LED_AUTO_LIST)
+                	output = str(value) + ",ON"
+        	else:
+            		value = str(0)
+	except KeyboardInterrupt:
+		pass
 
 
 def initialDirCreator():
@@ -103,14 +103,22 @@ def initialDirCreator():
 
 def ON_LED(list):
     for x in list:
-        ledStatus.update({x: 'on'})
-        GPIO.output(led[x], True)
+	if x == 'led5':
+		ledStatus.update({x: 'on'})
+		GPIO.output(led[x], False)
+	else:
+        	ledStatus.update({x: 'on'})
+        	GPIO.output(led[x], True)
 
 
 def OFF_LED(list):
     for x in list:
-        ledStatus.update({x: 'off'})
-        GPIO.output(led[x], False)
+	if x == 'led5':
+                ledStatus.update({x: 'off'})
+                GPIO.output(led[x], True)
+	else:
+        	ledStatus.update({x: 'off'})
+        	GPIO.output(led[x], False)
 
 
 app = Flask(__name__)
@@ -217,6 +225,6 @@ if __name__ == '__main__':
 
         th1.join()
     except KeyboardInterrupt:
-        pass
+	pass
     finally:
         GPIO.cleanup()
