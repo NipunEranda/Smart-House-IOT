@@ -69,11 +69,11 @@ def automate():
         	global LED_OFF_LIST
         	if (automationStatus == True):
             		value = rc_time(ldr)
-            	if (int(value) <= 250000):
+            	if (int(value) <= 300000):
                 	publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
                 	OFF_LED(LED_AUTO_LIST)
                 	output = str(value) + ",OFF"
-            	elif (int(value) > 250000):
+            	elif (int(value) > 300000):
                 	publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
                 	ON_LED(LED_AUTO_LIST)
                 	output = str(value) + ",ON"

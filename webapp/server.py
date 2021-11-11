@@ -38,9 +38,9 @@ try:
         while True:
                 value = rc_time(ldr)
                 publishMod()
-                if(int(value) <= 1000000):
+                if(int(value) <= 400000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",OFF", hostname=host)
-                if(int(value) > 1000000):
+                if(int(value) > 400000):
                         publish.single("iotSmartHouse001/lightDecision", str(value) + ",ON", hostname=host)
 
 except KeyboardInterrupt:
